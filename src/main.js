@@ -6,7 +6,9 @@ import router from './router'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue from 'bootstrap-vue';
-
+import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
+Vue.component('v-icon', Icon)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
@@ -14,6 +16,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: { App, 'v-icon': Icon },
   template: '<App/>'
 })
