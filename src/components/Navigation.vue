@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <b-navbar fixed="top" toggleable="lg" type="dark" variant="secondary">
+    <div style="color:white">
+        <b-navbar fixed="top" toggleable="lg" style="background-color:purple">
             <b-navbar-nav >
 
                 <div style="position:relative; top:6.5px">
@@ -9,6 +9,7 @@
                 <b-nav-item-dropdown text="Daily Report">
                     <b-dropdown-item href="#">test</b-dropdown-item>
                 </b-nav-item-dropdown>
+                <div><span style="display:inline-block; width: 10px;"></span></div>
 
                 <div style="position:relative; top:6.5px">
                     <v-icon name="cubes" fixed="bottom"/>
@@ -16,6 +17,7 @@
                 <b-nav-item-dropdown text="Company Management">
                     <b-dropdown-item href="#">test</b-dropdown-item>
                 </b-nav-item-dropdown>
+                <div><span style="display:inline-block; width: 10px;"></span></div>
 
                 <div style="position:relative; top:6.5px">
                     <v-icon name="chart-bar" fixed="bottom"/>
@@ -23,30 +25,31 @@
                 <b-nav-item-dropdown text="Report">
                     <b-dropdown-item href="#">test</b-dropdown-item>
                 </b-nav-item-dropdown>
+                <div><span style="display:inline-block; width: 10px;"></span></div>
 
                 <div style="position:relative; top:6.5px">
-                    <v-icon name="recycle" fixed="bottom"/>
+                    <v-icon name="retweet" fixed="bottom"/>
                 </div>
                 <b-nav-item-dropdown text="My Menu">
                     <b-dropdown-item href="#">test</b-dropdown-item>
                 </b-nav-item-dropdown>
+                <div><span style="display:inline-block; width: 10px;"></span></div>
 
                 <div style="position:relative; top:6.5px">
-                    <v-icon name="newspaper" fixed="bottom"/>
+                    <v-icon name="regular/newspaper" fixed="bottom"/>
                 </div>
                 <b-nav-item-dropdown text="Manager Menu">
                     <b-dropdown-item href="#">test</b-dropdown-item>
                 </b-nav-item-dropdown>
+                <div><span style="display:inline-block; width: 10px;"></span></div>
 
-                <b-button variant="info"><span style="font-weight:900">+</span>Register</b-button>
+                <b-button variant="primary" style="font-weight: 550"><span style="font-weight:bolder">+</span>Register</b-button>
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">
-                <b-button variant="info">Back to Dashboard</b-button>
+                <b-button variant="primary" style="font-weight: 550">Back to Dashboard</b-button>
 
-                <div>
-                    <span style="display:inline-block; width: 10px;"></span>
-                </div>
+                <div><span style="display:inline-block; width: 10px;"></span></div>
 
                 <div style="position:relative; top:6.5px">
                     <v-icon name="bell" fixed="bottom"/>
@@ -67,3 +70,10 @@
         }
     }
 </script>
+
+<style>
+   .navbar-light .navbar-nav .nav-link{
+      color:white;
+      font-weight: bold
+    }
+ </style>
