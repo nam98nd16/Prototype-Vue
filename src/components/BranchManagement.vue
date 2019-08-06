@@ -56,15 +56,15 @@
                     <b-button style="float:left" variant="outline-primary" size="sm" @click="closeSettings"><span style="display:inline-block; width: 5px;"></span>Return<span style="display:inline-block; width: 5px;"></span></b-button>
                     <br><br>
                     <div class="card">
-                        <div style="padding-bottom:50px">
+                        <div style="padding-bottom:50px;position: relative">
                             <div style="width:450px; height: 0px; padding-bottom:20px">
                                 <p style="font-size:14px; position:relative; padding-top:7px">Branch Code: {{ selectedItem.code }}</p>
                                 <p style="font-size:14px; position:relative; height:10px">Branch Name: {{ selectedItem.name }}</p>
                             </div>
-                            <div style="margin-left: 900px; height:0px; padding-top:0px">
-                                <p>Branch Setting: </p>
-                                <b-button style="margin-top: -80px; margin-left: 220px; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="!selectedItem.isActive">Not Using</b-button>
-                                <b-button style="margin-top: -127px; margin-left: 420px; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="selectedItem.isActive">Using</b-button>
+                            <div style="position: relative; float: right; height:0px; padding-top:0px">
+                                <p style="position: relative; left: -180px">Branch Setting: </p>
+                                <b-button style="position: relative; top: -45px; left: -30px; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="!selectedItem.isActive">Not Using</b-button>
+                                <b-button style="position: relative; top: -45px; left: -20px ; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="selectedItem.isActive">Using</b-button>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                         <b-button disabled variant="danger" style="float:right; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="trash-alt" fixed="bottom"/></div></span>Delete</b-button>
                         <br><br>
                         <div style="display-flex">
-                            <div class="card" style="float:left; text-align:left; width: 230px">
+                            <div class="card" style="position: relative; float:left; text-align:left; min-width: 16%">
                                 <div style="padding-left: 14px; padding-bottom: 13px; padding-top:10px">
                                     <p style="height:10px">Select branch</p>
                                     <select style="width:200px" v-model="selectedBranch">
@@ -98,7 +98,7 @@
                                     <b-button :disabled="selectedEmployee == ''" style="width:200px; background-color: #00008B"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
                                 </div>
                             </div>
-                            <b-table v-if="" style="width: 1175px; float: right"
+                            <b-table style="position: relative; width: 79%; float: right; max-width: 83%"
                                 show-empty head-variant="light"
                                 hover
                                 stacked="md"
