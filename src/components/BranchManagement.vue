@@ -165,9 +165,9 @@ export default {
           { key: 'isActive', label: 'Status', sortable: true, class:"fit2" }
         ],
         employeeFields: [
-            { key: 'eName', label: 'Employee Name'},
-            { key: 'position', label: 'Position'},
-            { key: 'workplace', label: 'Workplace'},
+            { key: 'eName', label: 'Employee Name', class: "text-left"},
+            { key: 'position', label: 'Position', class: "text-left"},
+            { key: 'workplace', label: 'Workplace', class: "text-left"},
             { key: 'delete', label: '', class: 'fit'}        ],
         totalRows: 1,
         currentPage: 1,
