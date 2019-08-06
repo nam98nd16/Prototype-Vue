@@ -45,7 +45,7 @@
                     </template>
 
                     <template slot="actions" slot-scope="data">
-                        <b-button style="background-color:purple" size="sm" @click="openSettings(data.item)" class="mr-1">
+                        <b-button style="background-color:#00008B" size="sm" @click="openSettings(data.item)" class="mr-1">
                         Settings
                         </b-button>
                     </template>
@@ -63,8 +63,8 @@
                             </div>
                             <div style="margin-left: 900px; height:0px; padding-top:0px">
                                 <p>Branch Setting: </p>
-                                <b-button style="margin-top: -80px; margin-left: 220px; background-color:purple" @click="showConfirmationBox(selectedItem.code)" :disabled="!selectedItem.isActive">Not Using</b-button>
-                                <b-button style="margin-top: -127px; margin-left: 420px; background-color:purple" @click="showConfirmationBox(selectedItem.code)" :disabled="selectedItem.isActive">Using</b-button>
+                                <b-button style="margin-top: -80px; margin-left: 220px; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="!selectedItem.isActive">Not Using</b-button>
+                                <b-button style="margin-top: -127px; margin-left: 420px; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="selectedItem.isActive">Using</b-button>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                                         </option>
                                     </select>
                                     <br><br>
-                                    <b-button :disabled="selectedEmployee == ''" style="width:200px; background-color: purple"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
+                                    <b-button :disabled="selectedEmployee == ''" style="width:200px; background-color: #00008B"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
                                 </div>
                             </div>
                             <b-table v-if="" style="width: 1175px; float: right"
@@ -121,7 +121,7 @@
                     </b-card>
                     <br>
                     <div style="display:flex">
-                        <b-button style="background-color: purple; float:left; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="save" fixed="bottom"/></div></span>Save</b-button>
+                        <b-button style="background-color: #00008B; float:left; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="save" fixed="bottom"/></div></span>Save</b-button>
                         <b-button variant="outline-primary" style="margin-left: 15px; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="sync-alt" fixed="bottom"/></div></span>Reset</b-button>
                     </div>
                 </div>

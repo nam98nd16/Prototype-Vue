@@ -1,6 +1,6 @@
 <template>
     <div style="color:white">
-        <b-navbar fixed="top" toggleable="lg" style="background-color:purple">
+        <b-navbar fixed="top" toggleable="lg" style="background-color:#00008B">
             <b-navbar-nav >
 
                 <div style="position:relative; top:6.5px">
