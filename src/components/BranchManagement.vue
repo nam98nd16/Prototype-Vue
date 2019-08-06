@@ -77,15 +77,21 @@
                                 <div style="padding-left: 14px; padding-bottom: 13px; padding-top:10px">
                                     <p style="height:10px">Select branch</p>
                                     <select style="width:200px" v-model="selectedBranch">
+                                        <option disabled>
+                                            Head office code | Head office name
+                                        </option>
                                         <option v-for="branch in items" :value="branch" :key="branch.code">
-                                            {{ branch.name }}
+                                            {{ branch.code }} <span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>  {{ branch.name }}
                                         </option>
                                     </select>
 
                                     <p style="position:relative; padding-top:10px; height:19px">Select employee</p>
                                     <select style="width:200px" v-model="selectedEmployee">
+                                        <option v-if="selectedBranch != ''" disabled>
+                                            Employee Code | Employee Name
+                                        </option>
                                         <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.eName">
-                                            {{ employee.eName }}
+                                            {{ employee.eCode }}<span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span> {{ employee.eName }}
                                         </option>
                                     </select>
                                     <br><br>
@@ -132,24 +138,24 @@ export default {
     data() {
       return {
         items: [
-          { isActive: true, code: 40, name: 'A', manager_name: 'Deathless', employees: [{eName: 'Nam', position: 'intern', workplace: 'A'}, {eName: 'Nam2', position: 'intern', workplace: 'A'}, {eName: 'Nam3', position: 'intern', workplace: 'A'}, {eName: 'Nam4', position: 'intern', workplace: 'A'}, {eName: 'Nam5', position: 'intern', workplace: 'A'}, {eName: 'Nam6', position: 'intern', workplace: 'A'}] },
-          { isActive: false, code: 21, name: 'B', manager_name: 'Unnamed' , employees: [{eName: 'B1', position: 'Bpostion', workplace: 'B'}, {eName: 'B2', position: 'Bpostion', workplace: 'B'}, {eName: 'B3', position: 'Bpostion', workplace: 'B'}]},
-          { isActive: false, code: 9, name: 'C', manager_name: 'Nameless', employees: [{eName: 'C1', position: 'Cpostion', workplace: 'C'}, {eName: 'C2', position: 'Cpostion', workplace: 'C'}, {eName: 'C3', position: 'Cpostion', workplace: 'C'}]},
-          { isActive: false, code: 89, name: 'D', manager_name: 'Undying', employees: [{eName: 'D1', position: 'Dpostion', workplace: 'D'}, {eName: 'D2', position: 'Dpostion', workplace: 'D'}, {eName: 'D3', position: 'Dpostion', workplace: 'D'}] },
-          { isActive: true, code: 38, name: 'E', manager_name: 'Gargantuar', employees: [{eName: 'E1', position: 'Epostion', workplace: 'E'}, {eName: 'E2', position: 'Epostion', workplace: 'E'}, {eName: 'E3', position: 'Epostion', workplace: 'E'}] },
-          { isActive: false, code: 27, name: 'F', manager_name: 'Unknown', employees: [{eName: 'F1', position: 'Fpostion', workplace: 'F'}, {eName: 'F2', position: 'Fpostion', workplace: 'F'}, {eName: 'F3', position: 'Fpostion', workplace: 'F'}] },
-          { isActive: true, code: 40, name: 'G', manager_name: 'Zomboss', employees: [{eName: 'G1', position: 'Gpostion', workplace: 'G'}, {eName: 'G2', position: 'Gpostion', workplace: 'G'}, {eName: 'G3', position: 'Gpostion', workplace: 'G'}] },
-          { isActive: true, code: 87, name: 'H', manager_name: 'High Priest', employees: [{eName: 'H1', position: 'Hpostion', workplace: 'H'}, {eName: 'H2', position: 'Hpostion', workplace: 'H'}, {eName: 'H3', position: 'Hpostion', workplace: 'H'}]},
-          { isActive: false, code: 26, name: 'I', manager_name: 'Buckethead', employees: [{eName: 'I1', position: 'Ipostion', workplace: 'I'}, {eName: 'I2', position: 'Ipostion', workplace: 'I'}, {eName: 'I3', position: 'Ipostion', workplace: 'I'}] },
-          { isActive: false, code: 22, name: 'J', manager_name: 'Conehead', employees: [{eName: 'J1', position: 'Jpostion', workplace: 'J'}, {eName: 'J2', position: 'Jpostion', workplace: 'J'}, {eName: 'J3', position: 'Jpostion', workplace: 'J'}] },
-          { isActive: true, code: 38, name: 'K', manager_name: 'Wizard', employees: [{eName: 'K1', position: 'Kpostion', workplace: 'K'}, {eName: 'K2', position: 'Kpostion', workplace: 'K'}, {eName: 'K3', position: 'Kpostion', workplace: 'K'}] },
-          { isActive: false, code: 50, name: 'L', manager_name: 'Barbarian', employees: [{eName: 'L1', position: 'Lpostion', workplace: 'L'}, {eName: 'L2', position: 'Lpostion', workplace: 'L'}, {eName: 'L3', position: 'Lpostion', workplace: 'L'}] },
-          { isActive: true, code: 51, name: 'M', manager_name: 'Archer', employees: [{eName: 'M1', position: 'Mpostion', workplace: 'M'}, {eName: 'M2', position: 'Mpostion', workplace: 'M'}, {eName: 'M3', position: 'Mpostion', workplace: 'M'}] },
-          { isActive: false, code: 52, name: 'N', manager_name: 'Ice', employees: [{eName: 'N1', position: 'Npostion', workplace: 'N'}, {eName: 'N2', position: 'Npostion', workplace: 'N'}, {eName: 'N3', position: 'Npostion', workplace: 'N'}] },
-          { isActive: true, code: 53, name: 'O', manager_name: 'Fire', employees: [{eName: 'O1', position: 'Opostion', workplace: 'O'}, {eName: 'O2', position: 'Opostion', workplace: 'O'}, {eName: 'O3', position: 'Opostion', workplace: 'O'}] },
-          { isActive: false, code: 54, name: 'P', manager_name: 'Rocket', employees: [{eName: 'P1', position: 'Ppostion', workplace: 'P'}, {eName: 'P2', position: 'Ppostion', workplace: 'P'}, {eName: 'P3', position: 'Ppostion', workplace: 'P'}] },
-          { isActive: true, code: 55, name: 'Q', manager_name: 'Lightning', employees: [{eName: 'Q1', position: 'Qpostion', workplace: 'Q'}, {eName: 'Q2', position: 'Qpostion', workplace: 'Q'}, {eName: 'Q3', position: 'Qpostion', workplace: 'Q'}] },
-          { isActive: false, code: 56, name: 'R', manager_name: 'Fisherman', employees: [{eName: 'R1', position: 'Rpostion', workplace: 'R'}, {eName: 'R2', position: 'Rpostion', workplace: 'R'}, {eName: 'R3', position: 'Rpostion', workplace: 'R'}] }
+          { isActive: true, code: 40, name: 'A', manager_name: 'Deathless', employees: [{eCode: '123', eName: 'Nam', position: 'intern', workplace: 'A'}, {eCode: '141', eName: 'Nam2', position: 'intern', workplace: 'A'}, {eCode: '159', eName: 'Nam3', position: 'intern', workplace: 'A'}, {eCode: '177', eName: 'Nam4', position: 'intern', workplace: 'A'}, {eCode: '178', eName: 'Nam5', position: 'intern', workplace: 'A'}, {eCode: '178', eName: 'Nam6', position: 'intern', workplace: 'A'}] },
+          { isActive: false, code: 21, name: 'B', manager_name: 'Unnamed' , employees: [{eCode: '124', eName: 'B1', position: 'Bpostion', workplace: 'B'}, {eCode: '142', eName: 'B2', position: 'Bpostion', workplace: 'B'}, {eCode: '160', eName: 'B3', position: 'Bpostion', workplace: 'B'}]},
+          { isActive: false, code: 19, name: 'C', manager_name: 'Nameless', employees: [{eCode: '125', eName: 'C1', position: 'Cpostion', workplace: 'C'}, {eCode: '143', eName: 'C2', position: 'Cpostion', workplace: 'C'}, {eCode: '161', eName: 'C3', position: 'Cpostion', workplace: 'C'}]},
+          { isActive: false, code: 89, name: 'D', manager_name: 'Undying', employees: [{eCode: '126', eName: 'D1', position: 'Dpostion', workplace: 'D'}, {eCode: '144', eName: 'D2', position: 'Dpostion', workplace: 'D'}, {eCode: '162', eName: 'D3', position: 'Dpostion', workplace: 'D'}] },
+          { isActive: true, code: 38, name: 'E', manager_name: 'Gargantuar', employees: [{eCode: '127', eName: 'E1', position: 'Epostion', workplace: 'E'}, {eCode: '145', eName: 'E2', position: 'Epostion', workplace: 'E'}, {eCode: '163', eName: 'E3', position: 'Epostion', workplace: 'E'}] },
+          { isActive: false, code: 27, name: 'F', manager_name: 'Unknown', employees: [{eCode: '128', eName: 'F1', position: 'Fpostion', workplace: 'F'}, {eCode: '146', eName: 'F2', position: 'Fpostion', workplace: 'F'}, {eCode: '164', eName: 'F3', position: 'Fpostion', workplace: 'F'}] },
+          { isActive: true, code: 41, name: 'G', manager_name: 'Zomboss', employees: [{eCode: '129', eName: 'G1', position: 'Gpostion', workplace: 'G'}, {eCode: '147', eName: 'G2', position: 'Gpostion', workplace: 'G'}, {eCode: '165', eName: 'G3', position: 'Gpostion', workplace: 'G'}] },
+          { isActive: true, code: 87, name: 'H', manager_name: 'High Priest', employees: [{eCode: '130', eName: 'H1', position: 'Hpostion', workplace: 'H'}, {eCode: '148', eName: 'H2', position: 'Hpostion', workplace: 'H'}, {eCode: '166', eName: 'H3', position: 'Hpostion', workplace: 'H'}]},
+          { isActive: false, code: 26, name: 'I', manager_name: 'Buckethead', employees: [{eCode: '131', eName: 'I1', position: 'Ipostion', workplace: 'I'}, {eCode: '149', eName: 'I2', position: 'Ipostion', workplace: 'I'}, {eCode: '167', eName: 'I3', position: 'Ipostion', workplace: 'I'}] },
+          { isActive: false, code: 22, name: 'J', manager_name: 'Conehead', employees: [{eCode: '132', eName: 'J1', position: 'Jpostion', workplace: 'J'}, {eCode: '150', eName: 'J2', position: 'Jpostion', workplace: 'J'}, {eCode: '168', eName: 'J3', position: 'Jpostion', workplace: 'J'}] },
+          { isActive: true, code: 39, name: 'K', manager_name: 'Wizard', employees: [{eCode: '133', eName: 'K1', position: 'Kpostion', workplace: 'K'}, {eCode: '151', eName: 'K2', position: 'Kpostion', workplace: 'K'}, {eCode: '169', eName: 'K3', position: 'Kpostion', workplace: 'K'}] },
+          { isActive: false, code: 50, name: 'L', manager_name: 'Barbarian', employees: [{eCode: '134', eName: 'L1', position: 'Lpostion', workplace: 'L'}, {eCode: '152', eName: 'L2', position: 'Lpostion', workplace: 'L'}, {eCode: '170', eName: 'L3', position: 'Lpostion', workplace: 'L'}] },
+          { isActive: true, code: 51, name: 'M', manager_name: 'Archer', employees: [{eCode: '135', eName: 'M1', position: 'Mpostion', workplace: 'M'}, {eCode: '153', eName: 'M2', position: 'Mpostion', workplace: 'M'}, {eCode: '171', eName: 'M3', position: 'Mpostion', workplace: 'M'}] },
+          { isActive: false, code: 52, name: 'N', manager_name: 'Ice', employees: [{eCode: '136', eName: 'N1', position: 'Npostion', workplace: 'N'}, {eCode: '154', eName: 'N2', position: 'Npostion', workplace: 'N'}, {eCode: '172', eName: 'N3', position: 'Npostion', workplace: 'N'}] },
+          { isActive: true, code: 53, name: 'O', manager_name: 'Fire', employees: [{eCode: '137', eName: 'O1', position: 'Opostion', workplace: 'O'}, {eCode: '155', eName: 'O2', position: 'Opostion', workplace: 'O'}, {eCode: '173', eName: 'O3', position: 'Opostion', workplace: 'O'}] },
+          { isActive: false, code: 54, name: 'P', manager_name: 'Rocket', employees: [{eCode: '138', eName: 'P1', position: 'Ppostion', workplace: 'P'}, {eCode: '156', eName: 'P2', position: 'Ppostion', workplace: 'P'}, {eCode: '174', eName: 'P3', position: 'Ppostion', workplace: 'P'}] },
+          { isActive: true, code: 55, name: 'Q', manager_name: 'Lightning', employees: [{eCode: '139', eName: 'Q1', position: 'Qpostion', workplace: 'Q'}, {eCode: '157', eName: 'Q2', position: 'Qpostion', workplace: 'Q'}, {eCode: '175', eName: 'Q3', position: 'Qpostion', workplace: 'Q'}] },
+          { isActive: false, code: 56, name: 'R', manager_name: 'Fisherman', employees: [{eCode: '140', eName: 'R1', position: 'Rpostion', workplace: 'R'}, {eCode: '158', eName: 'R2', position: 'Rpostion', workplace: 'R'}, {eCode: '176', eName: 'R3', position: 'Rpostion', workplace: 'R'}] }
         ],
         fields: [
           { key: 'actions', label: '', class: "fit" },
