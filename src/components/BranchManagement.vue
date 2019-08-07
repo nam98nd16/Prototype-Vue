@@ -82,7 +82,7 @@
                                             <option disabled>
                                                 Head office code | Head office name
                                             </option>
-                                            <option v-for="branch in items" :value="branch" :key="branch.code">
+                                            <option v-for="branch in items" v-if="branch != selectedItem" :value="branch" :key="branch.code">
                                                 {{ branch.code }} <span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>  {{ branch.name }}
                                             </option>
                                         </select>
@@ -93,7 +93,7 @@
                                     <div>
 
                                         <select style="transform: scale(1.4);width:8.2%; position: relative" v-model="selectedEmployee">
-                                            <option v-if="selectedBranch != null" disabled>
+                                            <option v-if="selectedBranch != ''" disabled>
                                                 Employee Code | Employee Name
                                             </option>
                                             <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.name">
@@ -104,7 +104,7 @@
                                         <input v-else style="width: 83%; position: relative" type="text" disabled />
                                     </div>
                                     <br><br>
-                                    <b-button :disabled="selectedEmployee == null" style="width:93%; background-color: #00008B; position: relative; top: -10px"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
+                                    <b-button :disabled="selectedEmployee == null" style="width:93%; background-color: #00008B; position: relative; top: -10px" @click="setAsContactPoint(selectedEmployee)"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
                                 </div>
                             </div>
                             <b-table style="position: relative; width: 100%; float: right; max-width: 83%"
@@ -194,11 +194,6 @@ export default {
         employeesToBeRemoved: [],
         checkStatus: '',
         filter2: '',
-        infoModal: {
-          id: 'info-modal',
-          title: '',
-          content: ''
-        }
       }
     },
     mounted() {
@@ -206,15 +201,6 @@ export default {
       this.filter = ""
     },
     methods: {
-      info(item, index, button) {
-        this.infoModal.title = `Row index: ${index}`
-        this.infoModal.content = JSON.stringify(item, null, 2)
-        this.$root.$emit('bv::show::modal', this.infoModal.id, button)
-      },
-      resetInfoModal() {
-        this.infoModal.title = ''
-        this.infoModal.content = ''
-      },
       openSettings(item) {
           this.selectedItem = item
           this.selectedItemEmployees = item.employees
@@ -232,7 +218,7 @@ export default {
           this.items[this.items.findIndex(x => x.code == BranchCode)].isActive = !this.items[this.items.findIndex(x => x.code == BranchCode)].isActive
       },
       clearSelectedEmployee(){
-          this.selectedEmployee = ''
+          this.selectedEmployee = null
           //console.log(this.selectedEmployee)
       },
       processRemovalArray(item, event){
@@ -251,21 +237,19 @@ export default {
           var tempEmployees = this.items[indexOfCurrentBranch].employees
           this.employeesToBeRemoved.forEach(function(entry){
               indexesToBeRemoved.push(tempEmployees.indexOf(entry))
-              //console.log(tempEmployees.indexOf(entry))
           })
           indexesToBeRemoved.sort()
           for (var i = indexesToBeRemoved.length - 1; i >= 0; i--){
-              //console.log(indexesToBeRemoved[i])
               this.items[indexOfCurrentBranch].employees.splice(indexesToBeRemoved[i], 1)
-              //this.selectedItemEmployees.splice(indexesToBeRemoved[i], 1)
           }
-          //this.selectedItemEmployees.forEach(function(entry) {
-            //  console.log(entry.eName)
-          //})
-          //indexesToBeRemoved.forEach(function(entry) {
-          //    console.log(entry)
-          //})
           this.employeesToBeRemoved = []
+      },
+      setAsContactPoint(emp){
+          var indexOfCurrentBranch = this.items.indexOf(this.selectedItem)
+          this.items[indexOfCurrentBranch].employees.push(emp)
+          var indexOfSelectedBranch = this.items.indexOf(this.selectedBranch)
+          var indexToBeRemoved = this.items[indexOfSelectedBranch].employees.indexOf(emp)
+          this.items[indexOfSelectedBranch].employees.splice(indexToBeRemoved, 1)
       },
       showConfirmationBox(code) {
          //this.employeesToBeRemoved.forEach(function(entry) {
