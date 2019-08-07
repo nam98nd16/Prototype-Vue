@@ -73,29 +73,37 @@
                         <b-button :disabled="employeesToBeRemoved.length == 0" variant="danger" style="float:right; width: 90px" @click="confirmDelete"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="trash-alt" fixed="bottom"/></div></span>Delete</b-button>
                         <br><br>
                         <div style="display:flex">
-                            <div class="card" style="position: relative; float:left; height: 100%; text-align:left; min-width: 16%; margin-right: 2%">
+                            <div class="card" style="position: relative; float:left; height: 100%; text-align:left; width: 22.5%; margin-right: 2%">
                                 <div style="padding-left: 14px; padding-bottom: 13px; padding-top:10px">
                                     <p style="height:10px">Select branch</p>
-                                    <select style="width:94%" v-model="selectedBranch" @change="clearSelectedEmployee">
-                                        <option disabled>
-                                            Head office code | Head office name
-                                        </option>
-                                        <option v-for="branch in items" :value="branch" :key="branch.code">
-                                            {{ branch.code }} <span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>  {{ branch.name }}
-                                        </option>
-                                    </select>
+                                    <div>
+
+                                        <select style="transform: scale(1.37);width:8.2%; position: relative" v-model="selectedBranch" @change="clearSelectedEmployee">
+                                            <option disabled>
+                                                Head office code | Head office name
+                                            </option>
+                                            <option v-for="branch in items" :value="branch" :key="branch.code">
+                                                {{ branch.code }} <span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>  {{ branch.name }}
+                                            </option>
+                                        </select>
+                                        <input style="width: 83%; position: relative" type="text" disabled :value="selectedBranch.name" />
+                                    </div>
 
                                     <p style="position:relative; padding-top:10px; height:19px">Select employee</p>
-                                    <select style="width:94%" v-model="selectedEmployee">
-                                        <option v-if="selectedBranch != ''" disabled>
-                                            Employee Code | Employee Name
-                                        </option>
-                                        <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.eName">
-                                            {{ employee.eCode }}<span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span> {{ employee.eName }}
-                                        </option>
-                                    </select>
+                                    <div>
+
+                                        <select style="transform: scale(1.4);width:8.2%; position: relative" v-model="selectedEmployee">
+                                            <option v-if="selectedBranch != ''" disabled>
+                                                Employee Code | Employee Name
+                                            </option>
+                                            <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.eName">
+                                                {{ employee.eCode }}<span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span> {{ employee.eName }}
+                                            </option>
+                                        </select>
+                                        <input style="width: 83%; position: relative" type="text" disabled :value="selectedEmployee.eName" />
+                                    </div>
                                     <br><br>
-                                    <b-button :disabled="selectedEmployee == null" style="width:94%; background-color: #00008B"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
+                                    <b-button :disabled="selectedEmployee == ''" style="width:93%; background-color: #00008B; position: relative; top: -10px"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
                                 </div>
                             </div>
                             <b-table style="position: relative; width: 100%; float: right; max-width: 83%"
@@ -181,7 +189,7 @@ export default {
         selectedItem: '',
         selectedItemEmployees: [],
         selectedBranch: '',
-        selectedEmployee: null,
+        selectedEmployee: '',
         employeesToBeRemoved: [],
         checkStatus: '',
         filter2: '',
@@ -214,7 +222,7 @@ export default {
       },
       closeSettings() {
           this.selectedBranch = ''
-          this.selectedEmployee = null
+          this.selectedEmployee = ''
           this.showMain = true
           this.showSettings = false
       },
@@ -223,7 +231,7 @@ export default {
           this.items[this.items.findIndex(x => x.code == BranchCode)].isActive = !this.items[this.items.findIndex(x => x.code == BranchCode)].isActive
       },
       clearSelectedEmployee(){
-          this.selectedEmployee = null
+          this.selectedEmployee = ''
           //console.log(this.selectedEmployee)
       },
       processRemovalArray(item, event){
@@ -259,9 +267,9 @@ export default {
           this.employeesToBeRemoved = []
       },
       showConfirmationBox(code) {
-         this.employeesToBeRemoved.forEach(function(entry) {
-             console.log(entry.eName)
-         })
+         //this.employeesToBeRemoved.forEach(function(entry) {
+            // console.log(entry.eName)
+         //})
         this.$bvModal.msgBoxConfirm('Do you really wish to switch the status of this branch?', {
           title: 'Confirmation',
           size: 'sm',
