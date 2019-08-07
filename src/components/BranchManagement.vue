@@ -72,11 +72,11 @@
                     <b-card>
                         <b-button disabled variant="danger" style="float:right; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="trash-alt" fixed="bottom"/></div></span>Delete</b-button>
                         <br><br>
-                        <div style="display-flex">
-                            <div class="card" style="position: relative; float:left; text-align:left; min-width: 16%">
+                        <div style="display:flex">
+                            <div class="card" style="position: relative; float:left; text-align:left; min-width: 16%; margin-right: 20px">
                                 <div style="padding-left: 14px; padding-bottom: 13px; padding-top:10px">
                                     <p style="height:10px">Select branch</p>
-                                    <select style="width:200px" v-model="selectedBranch">
+                                    <select style="width:94%" v-model="selectedBranch" @change="clearSelectedEmployee">
                                         <option disabled>
                                             Head office code | Head office name
                                         </option>
@@ -86,7 +86,7 @@
                                     </select>
 
                                     <p style="position:relative; padding-top:10px; height:19px">Select employee</p>
-                                    <select style="width:200px" v-model="selectedEmployee">
+                                    <select style="width:94%" v-model="selectedEmployee">
                                         <option v-if="selectedBranch != ''" disabled>
                                             Employee Code | Employee Name
                                         </option>
@@ -95,10 +95,10 @@
                                         </option>
                                     </select>
                                     <br><br>
-                                    <b-button :disabled="selectedEmployee == ''" style="width:200px; background-color: #00008B"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
+                                    <b-button :disabled="selectedEmployee == null" style="width:94%; background-color: #00008B"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
                                 </div>
                             </div>
-                            <b-table style="position: relative; width: 79%; float: right; max-width: 83%"
+                            <b-table style="position: relative; width: 100%; float: right; max-width: 83%"
                                 show-empty head-variant="light"
                                 hover
                                 stacked="md"
@@ -114,7 +114,9 @@
                                 </template>
 
                                 <template slot="delete" slot-scope="data">
-                                    <b-form-checkbox style="position:relative; padding-left:32px"></b-form-checkbox>
+                                    <form style="position: relative; right: 5px; top: 3px; transform: scale(1.8)">
+                                        <input type="checkbox" name="checkfield" id="g01-01" style="position: relative; left: 4px" @change="processRemovalArray(data.item, $event)">
+                                    </form>
                                 </template>
                             </b-table>
                         </div>
@@ -168,7 +170,7 @@ export default {
             { key: 'eName', label: 'Employee Name', class: "text-left"},
             { key: 'position', label: 'Position', class: "text-left"},
             { key: 'workplace', label: 'Workplace', class: "text-left"},
-            { key: 'delete', label: '', class: 'fit'}        ],
+            { key: 'delete', label: '', class: 'fit3'}        ],
         totalRows: 1,
         currentPage: 1,
         filter: null,
@@ -178,6 +180,8 @@ export default {
         selectedItemEmployees: [],
         selectedBranch: '',
         selectedEmployee: '',
+        employeesToBeRemoved: [],
+        checkStatus: '',
         infoModal: {
           id: 'info-modal',
           title: '',
@@ -207,7 +211,7 @@ export default {
       },
       closeSettings() {
           this.selectedBranch = ''
-          this.selectedEmployee = ''
+          this.selectedEmployee = null
           this.showMain = true
           this.showSettings = false
       },
@@ -215,7 +219,24 @@ export default {
           //console.log(this.items.findIndex(x => x.code == BranchCode))
           this.items[this.items.findIndex(x => x.code == BranchCode)].isActive = !this.items[this.items.findIndex(x => x.code == BranchCode)].isActive
       },
+      clearSelectedEmployee(){
+          this.selectedEmployee = null
+          console.log(this.selectedEmployee)
+      },
+      processRemovalArray(item, event){
+          if (event.target.checked) {
+              this.employeesToBeRemoved.push(item)
+          } else {
+              var index = this.employeesToBeRemoved.indexOf(item)
+              if (index > -1){
+                this.employeesToBeRemoved.splice(index, 1)
+              }
+          }
+      },
       showConfirmationBox(code) {
+          this.employeesToBeRemoved.forEach(function(entry) {
+              console.log(entry.eName)
+          })
         this.$bvModal.msgBoxConfirm('Do you really wish to switch the status of this branch?', {
           title: 'Confirmation',
           size: 'sm',
@@ -246,5 +267,8 @@ export default {
     }
     .fit2 {
         width: 100px
+    }
+    .fit3 {
+        width: 60px
     }
 </style>
