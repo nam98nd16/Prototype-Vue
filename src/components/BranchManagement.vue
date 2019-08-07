@@ -70,10 +70,10 @@
                     </div>
                     <br>
                     <b-card>
-                        <b-button disabled variant="danger" style="float:right; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="trash-alt" fixed="bottom"/></div></span>Delete</b-button>
+                        <b-button :disabled="employeesToBeRemoved.length == 0" variant="danger" style="float:right; width: 90px" @click="confirmDelete"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="trash-alt" fixed="bottom"/></div></span>Delete</b-button>
                         <br><br>
                         <div style="display:flex">
-                            <div class="card" style="position: relative; float:left; text-align:left; min-width: 16%; margin-right: 20px">
+                            <div class="card" style="position: relative; float:left; height: 100%; text-align:left; min-width: 16%; margin-right: 2%">
                                 <div style="padding-left: 14px; padding-bottom: 13px; padding-top:10px">
                                     <p style="height:10px">Select branch</p>
                                     <select style="width:94%" v-model="selectedBranch" @change="clearSelectedEmployee">
@@ -102,11 +102,13 @@
                                 show-empty head-variant="light"
                                 hover
                                 stacked="md"
+                                :filter="filter2"
                                 :items="selectedItemEmployees"
                                 :fields="employeeFields"
                                 :current-page="currentPage"
                                 :bordered="true"
                                 :small="true"
+                                :fixed="true"
                                 >
 
                                 <template slot="HEAD_delete" slot-scope="data">
@@ -115,7 +117,7 @@
 
                                 <template slot="delete" slot-scope="data">
                                     <form style="position: relative; right: 5px; top: 3px; transform: scale(1.8)">
-                                        <input type="checkbox" name="checkfield" id="g01-01" style="position: relative; left: 4px" @change="processRemovalArray(data.item, $event)">
+                                        <input type="checkbox" style="position: relative; left: 4px" @change="processRemovalArray(data.item, $event)">
                                     </form>
                                 </template>
                             </b-table>
@@ -179,9 +181,10 @@ export default {
         selectedItem: '',
         selectedItemEmployees: [],
         selectedBranch: '',
-        selectedEmployee: '',
+        selectedEmployee: null,
         employeesToBeRemoved: [],
         checkStatus: '',
+        filter2: '',
         infoModal: {
           id: 'info-modal',
           title: '',
@@ -221,7 +224,7 @@ export default {
       },
       clearSelectedEmployee(){
           this.selectedEmployee = null
-          console.log(this.selectedEmployee)
+          //console.log(this.selectedEmployee)
       },
       processRemovalArray(item, event){
           if (event.target.checked) {
@@ -233,10 +236,32 @@ export default {
               }
           }
       },
-      showConfirmationBox(code) {
-          this.employeesToBeRemoved.forEach(function(entry) {
-              console.log(entry.eName)
+      removeEmployees(){
+          var indexesToBeRemoved = []
+          var indexOfCurrentBranch = this.items.indexOf(this.selectedItem)
+          var tempEmployees = this.items[indexOfCurrentBranch].employees
+          this.employeesToBeRemoved.forEach(function(entry){
+              indexesToBeRemoved.push(tempEmployees.indexOf(entry))
+              //console.log(tempEmployees.indexOf(entry))
           })
+          indexesToBeRemoved.sort()
+          for (var i = indexesToBeRemoved.length - 1; i >= 0; i--){
+              //console.log(indexesToBeRemoved[i])
+              this.items[indexOfCurrentBranch].employees.splice(indexesToBeRemoved[i], 1)
+              //this.selectedItemEmployees.splice(indexesToBeRemoved[i], 1)
+          }
+          //this.selectedItemEmployees.forEach(function(entry) {
+            //  console.log(entry.eName)
+          //})
+          //indexesToBeRemoved.forEach(function(entry) {
+          //    console.log(entry)
+          //})
+          this.employeesToBeRemoved = []
+      },
+      showConfirmationBox(code) {
+         this.employeesToBeRemoved.forEach(function(entry) {
+             console.log(entry.eName)
+         })
         this.$bvModal.msgBoxConfirm('Do you really wish to switch the status of this branch?', {
           title: 'Confirmation',
           size: 'sm',
@@ -251,6 +276,30 @@ export default {
           .then(value => {
             if (value) {
                 this.updateStatus(code)
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+      },
+      confirmDelete() {
+          //this.employeesToBeRemoved.forEach(function(entry) {
+            //  console.log(entry.eName)
+          //})
+        this.$bvModal.msgBoxConfirm('Are you sure that you want to remove these employees?', {
+          title: 'Confirmation',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then(value => {
+            if (value) {
+                this.removeEmployees()
             }
           })
           .catch(err => {
