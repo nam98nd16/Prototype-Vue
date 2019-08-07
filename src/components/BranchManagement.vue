@@ -18,7 +18,7 @@
                 >
 
                     <template slot="HEAD_isActive" slot-scope="data">
-                        <div style="text-align:left">
+                        <div style="text-align:center">
                             <p>{{ data.label }}</p>
                             <b-dropdown type="light" variant="primary" text="Select">
                                 <b-dropdown-item @click="filter='true'" >Using</b-dropdown-item>
@@ -45,8 +45,8 @@
                     </template>
 
                     <template slot="actions" slot-scope="data">
-                        <b-button style="background-color:#00008B" size="sm" @click="openSettings(data.item)" class="mr-1">
-                        Settings
+                        <b-button style="background-color:#00008B; width: 85%" @click="openSettings(data.item)" class="mr-1">
+                        <span><div style="font-size: 67%">Settings</div></span>
                         </b-button>
                     </template>
 
@@ -93,17 +93,18 @@
                                     <div>
 
                                         <select style="transform: scale(1.4);width:8.2%; position: relative" v-model="selectedEmployee">
-                                            <option v-if="selectedBranch != ''" disabled>
+                                            <option v-if="selectedBranch != null" disabled>
                                                 Employee Code | Employee Name
                                             </option>
-                                            <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.eName">
+                                            <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.name">
                                                 {{ employee.eCode }}<span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span> {{ employee.eName }}
                                             </option>
                                         </select>
-                                        <input style="width: 83%; position: relative" type="text" disabled :value="selectedEmployee.eName" />
+                                        <input v-if="selectedEmployee != null" style="width: 83%; position: relative" type="text" disabled :value="selectedEmployee.eName" />
+                                        <input v-else style="width: 83%; position: relative" type="text" disabled />
                                     </div>
                                     <br><br>
-                                    <b-button :disabled="selectedEmployee == ''" style="width:93%; background-color: #00008B; position: relative; top: -10px"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
+                                    <b-button :disabled="selectedEmployee == null" style="width:93%; background-color: #00008B; position: relative; top: -10px"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
                                 </div>
                             </div>
                             <b-table style="position: relative; width: 100%; float: right; max-width: 83%"
@@ -189,7 +190,7 @@ export default {
         selectedItem: '',
         selectedItemEmployees: [],
         selectedBranch: '',
-        selectedEmployee: '',
+        selectedEmployee: null,
         employeesToBeRemoved: [],
         checkStatus: '',
         filter2: '',
@@ -222,7 +223,7 @@ export default {
       },
       closeSettings() {
           this.selectedBranch = ''
-          this.selectedEmployee = ''
+          this.selectedEmployee = null
           this.showMain = true
           this.showSettings = false
       },
@@ -320,12 +321,12 @@ export default {
 
 <style>
     .fit {
-        width: 92px
+        width: 8%
     }
     .fit2 {
-        width: 100px
+        width: 7%
     }
     .fit3 {
-        width: 60px
+        width: 8%
     }
 </style>
