@@ -246,15 +246,15 @@ export default {
       },
       setAsContactPoint(emp){
           var indexOfCurrentBranch = this.items.indexOf(this.selectedItem)
-          this.items[indexOfCurrentBranch].employees.push(emp)
-          var indexOfSelectedBranch = this.items.indexOf(this.selectedBranch)
-          var indexToBeRemoved = this.items[indexOfSelectedBranch].employees.indexOf(emp)
-          this.items[indexOfSelectedBranch].employees.splice(indexToBeRemoved, 1)
+          if (this.items[indexOfCurrentBranch].employees.indexOf(emp) == -1){
+            this.items[indexOfCurrentBranch].employees.push(emp)
+            var indexOfSelectedBranch = this.items.indexOf(this.selectedBranch)
+            var indexToBeRemoved = this.items[indexOfSelectedBranch].employees.indexOf(emp)
+            this.items[indexOfSelectedBranch].employees.splice(indexToBeRemoved, 1)
+            this.selectedEmployee = null
+          }
       },
       showConfirmationBox(code) {
-         //this.employeesToBeRemoved.forEach(function(entry) {
-            // console.log(entry.eName)
-         //})
         this.$bvModal.msgBoxConfirm('Do you really wish to switch the status of this branch?', {
           title: 'Confirmation',
           size: 'sm',
