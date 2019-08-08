@@ -242,6 +242,12 @@ export default {
           for (var i = indexesToBeRemoved.length - 1; i >= 0; i--){
               this.items[indexOfCurrentBranch].employees.splice(indexesToBeRemoved[i], 1)
           }
+          for (var i = this.employeesToBeRemoved.length - 1; i >= 0; i--){
+              if (this.employeesToBeRemoved[i].workplace != this.selectedItem.name){
+                var index = this.items.findIndex(x => x.name == this.employeesToBeRemoved[i].workplace)
+                this.items[index].employees.push(this.employeesToBeRemoved[i])
+              }
+          }
           this.employeesToBeRemoved = []
       },
       setAsContactPoint(emp){
