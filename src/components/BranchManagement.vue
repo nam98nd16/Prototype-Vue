@@ -126,7 +126,7 @@
 
                                 <template slot="delete" slot-scope="data">
                                     <form style="position: relative; right: 5px; top: 3px; transform: scale(1.8)">
-                                        <input type="checkbox" style="position: relative; left: 4px" @change="processRemovalArray(data.item, $event)">
+                                        <input type="checkbox" style="position: relative; left: 4px" :value="data.item" v-model="employeesToBeRemoved">
                                     </form>
                                 </template>
                             </b-table>
@@ -221,7 +221,7 @@ export default {
           this.selectedEmployee = null
           //console.log(this.selectedEmployee)
       },
-      processRemovalArray(item, event){
+      /*processRemovalArray(item, event){
           if (event.target.checked) {
               this.employeesToBeRemoved.push(item)
           } else {
@@ -230,7 +230,7 @@ export default {
                 this.employeesToBeRemoved.splice(index, 1)
               }
           }
-      },
+      },*/
       removeEmployees(){
           var indexesToBeRemoved = []
           var indexOfCurrentBranch = this.items.indexOf(this.selectedItem)
