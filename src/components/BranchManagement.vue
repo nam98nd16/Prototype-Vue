@@ -5,139 +5,142 @@
         <div class="card" style="padding-bottom:10px">
             <br>
             <b-container fluid>
-                <b-table v-if="showMain"
-                show-empty head-variant="light"
-                hover
-                stacked="md"
-                :items="items"
-                :fields="fields"
-                :current-page="currentPage"
-                :filter="filter"
-                :bordered="true"
-                :small="true"
-                >
+                <transition name="fade">
+                    <b-table v-if="showMain"
+                    show-empty head-variant="light"
+                    hover
+                    stacked="md"
+                    :items="items"
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :filter="filter"
+                    :bordered="true"
+                    :small="true"
+                    >
 
-                    <template slot="HEAD_isActive" slot-scope="data">
-                        <div style="text-align:center">
+                        <template slot="HEAD_isActive" slot-scope="data">
+                            <div style="text-align:center">
+                                <p>{{ data.label }}</p>
+                                <b-dropdown type="light" variant="primary" text="Select">
+                                    <b-dropdown-item @click="filter='true'" >Using</b-dropdown-item>
+                                    <b-dropdown-item @click="filter='false'">Not Using</b-dropdown-item>
+                                    <b-dropdown-item @click="filter=''">All</b-dropdown-item>
+                                </b-dropdown>
+                            </div>
+                        </template>
+
+                        <template slot="HEAD_code" slot-scope="data">
                             <p>{{ data.label }}</p>
-                            <b-dropdown type="light" variant="primary" text="Select">
-                                <b-dropdown-item @click="filter='true'" >Using</b-dropdown-item>
-                                <b-dropdown-item @click="filter='false'">Not Using</b-dropdown-item>
-                                <b-dropdown-item @click="filter=''">All</b-dropdown-item>
-                            </b-dropdown>
-                        </div>
-                    </template>
+                        </template>
 
-                    <template slot="HEAD_code" slot-scope="data">
-                        <p>{{ data.label }}</p>
-                    </template>
+                        <template slot="HEAD_name" slot-scope="data">
+                            <p>{{ data.label }}</p>
+                        </template>
 
-                    <template slot="HEAD_name" slot-scope="data">
-                        <p>{{ data.label }}</p>
-                    </template>
+                        <template slot="HEAD_manager_name" slot-scope="data">
+                            <p>{{ data.label }}</p>
+                        </template>
 
-                    <template slot="HEAD_manager_name" slot-scope="data">
-                        <p>{{ data.label }}</p>
-                    </template>
+                        <template slot="isActive" slot-scope="row">
+                            {{ row.value ? 'Using' : 'Not Using' }}
+                        </template>
 
-                    <template slot="isActive" slot-scope="row">
-                        {{ row.value ? 'Using' : 'Not Using' }}
-                    </template>
+                        <template slot="actions" slot-scope="data">
+                            <b-button style="background-color:#00008B; width: 85%" @click="openSettings(data.item)" class="mr-1">
+                            <span><div style="font-size: 67%">Settings</div></span>
+                            </b-button>
+                        </template>
 
-                    <template slot="actions" slot-scope="data">
-                        <b-button style="background-color:#00008B; width: 85%" @click="openSettings(data.item)" class="mr-1">
-                        <span><div style="font-size: 67%">Settings</div></span>
-                        </b-button>
-                    </template>
-
-                </b-table>
-
-                <div v-if="showSettings">
-                    <b-button style="float:left" variant="outline-primary" size="sm" @click="closeSettings"><span style="display:inline-block; width: 5px;"></span>Return<span style="display:inline-block; width: 5px;"></span></b-button>
-                    <br><br>
-                    <div class="card">
-                        <div style="padding-bottom:50px;position: relative">
-                            <div style="width:450px; height: 0px; padding-bottom:20px">
-                                <p style="font-size:14px; position:relative; padding-top:7px">Branch Code: {{ selectedItem.code }}</p>
-                                <p style="font-size:14px; position:relative; height:10px">Branch Name: {{ selectedItem.name }}</p>
-                            </div>
-                            <div style="position: relative; float: right; height:0px; padding-top:0px">
-                                <p style="position: relative; left: -180px">Branch Setting: </p>
-                                <b-button style="position: relative; top: -45px; left: -30px; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="!selectedItem.isActive">Not Using</b-button>
-                                <b-button style="position: relative; top: -45px; left: -20px ; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="selectedItem.isActive">Using</b-button>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <b-card>
-                        <b-button :disabled="employeesToBeRemoved.length == 0" variant="danger" style="float:right; width: 90px" @click="confirmDelete"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="trash-alt" fixed="bottom"/></div></span>Delete</b-button>
+                    </b-table>
+                </transition>
+                <transition name="fade">
+                    <div v-if="showSettings">
+                        <b-button style="float:left" variant="outline-primary" size="sm" @click="closeSettings"><span style="display:inline-block; width: 5px;"></span>Return<span style="display:inline-block; width: 5px;"></span></b-button>
                         <br><br>
-                        <div style="display:flex">
-                            <div class="card" style="position: relative; float:left; height: 100%; text-align:left; width: 22.5%; margin-right: 2%">
-                                <div style="padding-left: 14px; padding-bottom: 13px; padding-top:10px">
-                                    <p style="height:10px">Select branch</p>
-                                    <div>
-
-                                        <select style="transform: scale(1.37);width:8.2%; position: relative" v-model="selectedBranch" @change="clearSelectedEmployee">
-                                            <option disabled>
-                                                Head office code | Head office name
-                                            </option>
-                                            <option v-for="branch in items" v-if="branch != selectedItem" :value="branch" :key="branch.code">
-                                                {{ branch.code }} <span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>  {{ branch.name }}
-                                            </option>
-                                        </select>
-                                        <input style="width: 83%; position: relative" type="text" disabled :value="selectedBranch.name" />
-                                    </div>
-
-                                    <p style="position:relative; padding-top:10px; height:19px">Select employee</p>
-                                    <div>
-
-                                        <select style="transform: scale(1.4);width:8.2%; position: relative" v-model="selectedEmployee">
-                                            <option v-if="selectedBranch != ''" disabled>
-                                                Employee Code | Employee Name
-                                            </option>
-                                            <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.name">
-                                                {{ employee.eCode }}<span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span> {{ employee.eName }}
-                                            </option>
-                                        </select>
-                                        <input v-if="selectedEmployee != null" style="width: 83%; position: relative" type="text" disabled :value="selectedEmployee.eName" />
-                                        <input v-else style="width: 83%; position: relative" type="text" disabled />
-                                    </div>
-                                    <br><br>
-                                    <b-button :disabled="selectedEmployee == null" style="width:93%; background-color: #00008B; position: relative; top: -10px" @click="setAsContactPoint(selectedEmployee)"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
+                        <div class="card">
+                            <div style="padding-bottom:50px;position: relative">
+                                <div style="width:450px; height: 0px; padding-bottom:20px">
+                                    <p style="font-size:14px; position:relative; padding-top:7px">Branch Code: {{ selectedItem.code }}</p>
+                                    <p style="font-size:14px; position:relative; height:10px">Branch Name: {{ selectedItem.name }}</p>
+                                </div>
+                                <div style="position: relative; float: right; height:0px; padding-top:0px">
+                                    <p style="position: relative; left: -180px">Branch Setting: </p>
+                                    <b-button style="position: relative; top: -45px; left: -30px; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="!selectedItem.isActive">Not Using</b-button>
+                                    <b-button style="position: relative; top: -45px; left: -20px ; background-color:#00008B" @click="showConfirmationBox(selectedItem.code)" :disabled="selectedItem.isActive">Using</b-button>
                                 </div>
                             </div>
-                            <b-table style="position: relative; width: 100%; float: right; max-width: 83%"
-                                show-empty head-variant="light"
-                                hover
-                                stacked="md"
-                                :filter="filter2"
-                                :items="selectedItemEmployees"
-                                :fields="employeeFields"
-                                :current-page="currentPage"
-                                :bordered="true"
-                                :small="true"
-                                :fixed="true"
-                                >
-
-                                <template slot="HEAD_delete" slot-scope="data">
-                                    <div style="padding-bottom:2px"><v-icon name="trash-alt" fixed="bottom"/></div>
-                                </template>
-
-                                <template slot="delete" slot-scope="data">
-                                    <form style="position: relative; right: 5px; top: 3px; transform: scale(1.8)">
-                                        <input type="checkbox" style="position: relative; left: 4px" :value="data.item" v-model="employeesToBeRemoved">
-                                    </form>
-                                </template>
-                            </b-table>
                         </div>
-                    </b-card>
-                    <br>
-                    <div style="display:flex">
-                        <b-button style="background-color: #00008B; float:left; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="save" fixed="bottom"/></div></span>Save</b-button>
-                        <b-button variant="outline-primary" style="margin-left: 15px; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="sync-alt" fixed="bottom"/></div></span>Reset</b-button>
+                        <br>
+                        <b-card>
+                            <b-button :disabled="employeesToBeRemoved.length == 0" variant="danger" style="float:right; width: 90px" @click="confirmDelete"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="trash-alt" fixed="bottom"/></div></span>Delete</b-button>
+                            <br><br>
+                            <div style="display:flex">
+                                <div class="card" style="position: relative; float:left; height: 100%; text-align:left; width: 22.5%; margin-right: 2%">
+                                    <div style="padding-left: 14px; padding-bottom: 13px; padding-top:10px">
+                                        <p style="height:10px">Select branch</p>
+                                        <div>
+
+                                            <select style="transform: scale(1.37);width:8.2%; position: relative" v-model="selectedBranch" @change="clearSelectedEmployee">
+                                                <option disabled>
+                                                    Head office code | Head office name
+                                                </option>
+                                                <option v-for="branch in items" v-if="branch != selectedItem" :value="branch" :key="branch.code">
+                                                    {{ branch.code }} <span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>  {{ branch.name }}
+                                                </option>
+                                            </select>
+                                            <input style="width: 83%; position: relative" type="text" disabled :value="selectedBranch.name" />
+                                        </div>
+
+                                        <p style="position:relative; padding-top:10px; height:19px">Select employee</p>
+                                        <div>
+
+                                            <select style="transform: scale(1.4);width:8.2%; position: relative" v-model="selectedEmployee">
+                                                <option v-if="selectedBranch != ''" disabled>
+                                                    Employee Code | Employee Name
+                                                </option>
+                                                <option v-for="employee in selectedBranch.employees" :value="employee" :key="employee.name">
+                                                    {{ employee.eCode }}<span style="display:inline-block; width: 100px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span> {{ employee.eName }}
+                                                </option>
+                                            </select>
+                                            <input v-if="selectedEmployee != null" style="width: 83%; position: relative" type="text" disabled :value="selectedEmployee.eName" />
+                                            <input v-else style="width: 83%; position: relative" type="text" disabled />
+                                        </div>
+                                        <br><br>
+                                        <b-button :disabled="selectedEmployee == null" style="width:93%; background-color: #00008B; position: relative; top: -10px" @click="setAsContactPoint(selectedEmployee)"><span><div style="float:left; padding-bottom:2px"><v-icon name="regular/hand-point-up" fixed="bottom"/></div></span> Set as contact point</b-button>
+                                    </div>
+                                </div>
+                                <b-table style="position: relative; width: 100%; float: right; max-width: 83%"
+                                    show-empty head-variant="light"
+                                    hover
+                                    stacked="md"
+                                    :filter="filter2"
+                                    :items="selectedItemEmployees"
+                                    :fields="employeeFields"
+                                    :current-page="currentPage"
+                                    :bordered="true"
+                                    :small="true"
+                                    :fixed="true"
+                                    >
+
+                                    <template slot="HEAD_delete" slot-scope="data">
+                                        <div style="padding-bottom:2px"><v-icon name="trash-alt" fixed="bottom"/></div>
+                                    </template>
+
+                                    <template slot="delete" slot-scope="data">
+                                        <form style="position: relative; right: 5px; top: 3px; transform: scale(1.8)">
+                                            <input type="checkbox" style="position: relative; left: 4px" :value="data.item" v-model="employeesToBeRemoved">
+                                        </form>
+                                    </template>
+                                </b-table>
+                            </div>
+                        </b-card>
+                        <br>
+                        <div style="display:flex">
+                            <b-button style="background-color: #00008B; float:left; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="save" fixed="bottom"/></div></span>Save</b-button>
+                            <b-button variant="outline-primary" style="margin-left: 15px; width: 90px"><span><div style="position: relative; top:-2px; right: 3px; float:left"><v-icon name="sync-alt" fixed="bottom"/></div></span>Reset</b-button>
+                        </div>
                     </div>
-                </div>
+                </transition>
 
             </b-container>
         </div>
@@ -318,5 +321,11 @@ export default {
     }
     .fit3 {
         width: 8%
+    }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .3s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
     }
 </style>
