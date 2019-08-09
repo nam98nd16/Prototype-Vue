@@ -17,8 +17,11 @@ import 'vue-awesome/icons/trash-alt'
 import 'vue-awesome/icons/save'
 import 'vue-awesome/icons/sync-alt'
 import Icon from 'vue-awesome/components/Icon'
+//import PortalVue from 'portal-vue'
+
 Vue.component('v-icon', Icon)
 Vue.use(BootstrapVue)
+//Vue.use(PortalVue)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

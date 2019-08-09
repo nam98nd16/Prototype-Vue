@@ -278,6 +278,12 @@ export default {
           .then(value => {
             if (value) {
                 this.updateStatus(code)
+                this.$bvToast.toast("Successfully changed branch's status!", {
+                    title: 'Message',
+                    autoHideDelay: 5000,
+                    solid: true,
+                    variant: 'success'
+                })
             }
           })
           .catch(err => {
@@ -288,7 +294,7 @@ export default {
           //this.employeesToBeRemoved.forEach(function(entry) {
             //  console.log(entry.eName)
           //})
-        this.$bvModal.msgBoxConfirm('Are you sure that you want to remove these employees?', {
+        this.$bvModal.msgBoxConfirm('Are you sure that you want to remove selected employees?', {
           title: 'Confirmation',
           size: 'sm',
           buttonSize: 'sm',
@@ -302,6 +308,12 @@ export default {
           .then(value => {
             if (value) {
                 this.removeEmployees()
+                this.$bvToast.toast("Successfully removed selected employees!", {
+                    title: 'Message',
+                    autoHideDelay: 5000,
+                    solid: true,
+                    variant: 'success'
+                })
             }
           })
           .catch(err => {
